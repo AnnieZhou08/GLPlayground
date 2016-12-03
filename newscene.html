@@ -4,6 +4,14 @@
   <script src="libs/dat.gui.min.js"></script>
 </head>
   
+<style>
+    body {
+        /* set margin to 0 and overflow to hidden, to go fullscreen */
+        margin: 0;
+        overflow: hidden;
+    }
+</style>
+  
 </html>
   
 <script>
@@ -29,7 +37,7 @@ function init() {
   scene.add(cube);
   
   var planeGeometry = new THREE.PlaneGeometry(40, 40);
-  var planeMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
+  var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.receiveShadow = true;
   
@@ -40,7 +48,7 @@ function init() {
   scene.add(plane);
   
   var spotLight = new THREE.SpotLight(0xffffff);
-  spotLight.position.set(20, 50, 40); //where the light is added
+  spotLight.position.set(10, 40, 40); //where the light is added
   spotLight.shadowCameraNear = 20;
   spotLight.shadowCameraFar = 50;
   spotLight.castShadow = true;
@@ -48,9 +56,9 @@ function init() {
     
   camera = new THREE.PerspectiveCamera (
     45, window.innerWidth / window.innerHeight, 0.1, 1000); //determines what we see
-  camera.position.x=15;
-  camera.position.y=16;
-  camera.position.z=13;
+  camera.position.x=20;
+  camera.position.y=40;
+  camera.position.z=40;
   camera.lookAt(scene.position);
   
   control = new function() {
