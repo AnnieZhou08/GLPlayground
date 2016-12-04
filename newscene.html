@@ -2,6 +2,7 @@
 <head>
   <script src="libs/three.js"></script>
   <script src="libs/dat.gui.min.js"></script>
+  <script src="libs/stats.min.js"></script>
 </head>
   
 <style>
@@ -19,6 +20,7 @@
     var scene;
     var camera;
     var control;
+    var stats;
 
 function init() {
   
@@ -67,6 +69,7 @@ function init() {
     this.color = cubeMaterial.color.getHex();
   };
   addControlGui(control);
+  addStatsObject();
   
   document.body.appendChild(renderer.domElement);
   
@@ -84,12 +87,23 @@ function addControlGui(controlObject){
   gui.addColor(controlObject, 'color');
 }
   
+function addStatsObject(){
+  stats = new Stats();
+  stats.setMode(0);
+  stats.domElement.style.position= 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  document.body.appendChild(stats.domElement);
+}
+  
 function render() {
         // update the camera
         var rotSpeed = control.rotationSpeed;
         camera.position.x = camera.position.x * Math.cos(rotSpeed) + camera.position.z * Math.sin(rotSpeed);
         camera.position.z = camera.position.z * Math.cos(rotSpeed) - camera.position.x * Math.sin(rotSpeed);
         camera.lookAt(scene.position);
+  
+        stats.update();
 
         // change opacity
         scene.getObjectByName('cube').material.opacity = control.opacity;
