@@ -2,6 +2,7 @@
 <html>
   <title> globe </title>
   <script src="libs/three.js"></script>
+  <script src="libs/OrbitControls.js"></script>
 </html>
 
 <script>
@@ -9,6 +10,7 @@
 var scene;
 var renderer;
 var camera;
+var cameraControl;
 
 function init() {
   
@@ -21,8 +23,8 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMapEnabled = true;  
   
-  var sphereGeometry = new THREE.SphereGeometry(15, 30, 30);
-  var sphereMaterial = new THREE.MeshNormalMaterial();
+  var sphereGeometry = new THREE.SphereGeometry(15, 30, 30); // radius of sphere; number of width segments; number of height segments;
+  var sphereMaterial = new THREE.MeshNormalMaterial(); //color of mesh isn't determined by lighting, but determined by its normal vector (angle of the face);
   var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
   earthMesh.name = 'earth';
   scene.add(earthMesh);
@@ -32,12 +34,16 @@ function init() {
   camera.position.z = 33;
   camera.lookAt(scene.position);
   
+  cameraControl = new THREE.OrbitControls(camera); //adds a camera control (needs to update cameraControl in render);
+  
   document.body.appendChild(renderer.domElement);
   
   render();
 }
   
 function render() {
+  
+  cameraControl.update();
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 }
