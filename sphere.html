@@ -24,10 +24,16 @@ function init() {
   renderer.shadowMapEnabled = true;  
   
   var sphereGeometry = new THREE.SphereGeometry(15, 30, 30); // radius of sphere; number of width segments; number of height segments;
-  var sphereMaterial = new THREE.MeshNormalMaterial(); //color of mesh isn't determined by lighting, but determined by its normal vector (angle of the face);
+  var sphereMaterial = createEarthMaterial(); //color of mesh isn't determined by lighting, but determined by its normal vector (angle of the face);
   var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
   earthMesh.name = 'earth';
   scene.add(earthMesh);
+  
+  var cloudGeometry = new THREE.SphereGeometry(sphereGeometry.parameters.radius*1.05, sphereGeometry.parameters.widthSegments, sphereGeometry.parameters.heightSegments);
+  var cloudMaterial = createCloudMaterial();
+  var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+  cloudMesh.name = 'cloud';
+  scene.add(cloudMesh);
   
   camera.position.x = 35;
   camera.position.y = 36;
@@ -39,6 +45,23 @@ function init() {
   document.body.appendChild(renderer.domElement);
   
   render();
+}
+  
+function createEarthMaterial() {
+  //4096 is the maximum width for maps
+  var earthTexture = THREE.ImageUtils.loadTexture("earthmap4k.jpg"); //loads image
+  var earthMaterial = new THREE.MeshBasicMaterial(); //MeshBasicMaterial - material that doesn't change the way it looks according to the light sources
+  earthMaterial.map = earthTexture;// sets the map property to the txture we just created
+  
+  return earthMaterial;
+}
+
+function createCloudMaterial() {
+  var cloudTexture = THREE.ImageUtils.loadTexture("fair_clouds_4k.png");
+  var cloudMaterial = new THREE.MeshBasicMaterial();
+  cloudMaterial.map = cloudTexture;
+  cloudMaterial.transparent = true;
+  return cloudMaterial;
 }
   
 function render() {
